@@ -3,9 +3,9 @@
 <div class="nav">
   <nav class="nav-bar">
      <h3 id="text"> Ampeca</h3>
-     <input type="text" placeholder="Search for songs,playlist,artists,lyrics ..." id="search">
+     <input type="text" v-model="search" placeholder="Search for songs,playlist,artists,lyrics ..." id="search">
      <a @click="ToProfile" class="profile">Profile</a>
-     <a class="profile" id="play">My Library</a>
+     <a href="#" class="profile" id="play">My librery</a>
     </nav>
      
 </div>
@@ -14,7 +14,7 @@
       <div>
         
       </div>
-      <div class="glass" v-for ="product in Data" :key="product.id"> 
+      <div class="glass" v-for ="product in filtredData" :key="product.id"> 
         
          <!-- <p> https://archive.org/embed/ {{product.src}}</p> -->
         <!-- <p>{{product.Name}} </p>  -->
@@ -39,10 +39,18 @@ export default {
   components: {},
   data() {
     return {
+      search:"",
       message: "Hello World ",
-      Data: {},
+      Data: [],
       song : '/media/PoloG.369417b3.mp3'
     };
+  },
+  computed:{
+      filtredData:function(){
+        return this.Data.filter((item)=>{
+          return item.Name.toLowerCase().match(this.search.toLowerCase());
+        })
+      }
   },
   mounted() {
     axios.get("http://localhost:3000/api/get").then((res) => {
@@ -51,6 +59,7 @@ export default {
     });
     
   },
+
   methods: {
     x: function () {
       console.log("éd");
@@ -99,7 +108,7 @@ audio.currentTime = 40;
   top: 70px;
   border-radius: 10px;
   color: red;
-  
+
 }
 .nav{
   background-color: #2b2d2f;
@@ -165,5 +174,6 @@ audio.currentTime = 40;
   top: -20px;
   font-size: 30px;
   color: #dfdfdf;
+  text-decoration: none;
 }
 </style>
